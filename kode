@@ -1,0 +1,60 @@
+class FileProcessor:
+    def __init__(self, file_path):
+        """Initialize with the file path."""
+        self.file_path = file_path
+        self.content = None
+
+    def read_file(self):
+        """Read the content of the file and store it."""
+        try:
+            with open(self.file_path, 'r') as file:
+                self.content = file.read().strip()  # Strip to remove extra spaces or newlines
+        except FileNotFoundError:
+            print(f"File '{self.file_path}' not found.")
+            self.content = None
+
+    def array_format(self):
+        """Return the content in array format."""
+        if self.content:
+            return self.content.split(',')
+        else:
+            return []
+
+    def dictionary_format(self):
+        """Return the content in dictionary format (key: first letter)."""
+        if self.content:
+            items = self.content.split(',')
+            dictionary = {item[0].upper(): item for item in items}
+            return dictionary
+        else:
+            return {}
+
+def main():
+    while True:
+        # Get file name from the user
+        file_name = input("Enter the name of the file (with extension): ")
+        
+        # Create an instance of FileProcessor
+        processor = FileProcessor(file_name)
+        processor.read_file()
+        
+        if processor.content:
+            # If content is found, display Array format
+            print("\nArray Format:")
+            array = processor.array_format()
+            for item in array:
+                print(item)
+            
+            # Display Dictionary format
+            print("\nDictionary Format:")
+            dictionary = processor.dictionary_format()
+            for key, value in dictionary.items():
+                print(f"{key} => {value}")
+            
+            break
+        else:
+            # If file not found, ask for input again
+            print("Please try again with a valid file.")
+
+if __name__ == "__main__":
+    main()
